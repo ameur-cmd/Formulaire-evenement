@@ -424,7 +424,6 @@
 <body>
 <div class="wrap">
 
-  <!-- HERO -->
   <div class="hero">
     <svg class="anchor-diagram" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <line x1="32" y1="6" x2="32" y2="42" stroke="#0071E3" stroke-width="2.5" stroke-linecap="round"/>
@@ -445,7 +444,6 @@
     </div>
   </div>
 
-  <!-- HOSTS -->
   <div class="hosts">
     <div class="host">
       <div class="label">Organisé par</div>
@@ -457,7 +455,6 @@
     </div>
   </div>
 
-  <!-- FORM -->
   <div class="form-card">
     <h2>Formulaire d'inscription</h2>
     <p class="form-sub">Merci de remplir vos informations ci-dessous. Les places sont limitées.</p>
@@ -572,7 +569,7 @@
 
 <script>
   // ===== CONFIGURATION =====
-  // Replace this with your deployed Google Apps Script Web App URL
+  // Your deployed Google Apps Script Web App URL
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNbUp1FvPHHTzZcllwIRcxbzAGtvsENFAzaYv208_2EAPA8MDHI61jPiytM4vngwWE4A/exec";
 
   // Cities considered "Sousse or close area" — no room offer needed for these
@@ -614,19 +611,22 @@
     statusMsg.className = "status";
 
     const data = new FormData(form);
-    const payload = {
-      nom: data.get('nom') || '',
-      prenom: data.get('prenom') || '',
-      specialite: data.get('specialite') || '',
-      ville: data.get('ville') || '',
-      hebergement: data.get('hebergement') || ''
-    };
+    
+    // Package form parameters properly for url-encoding compatibility (fixes the blank fields issue)
+    const searchParams = new URLSearchParams();
+    searchParams.append('nom', data.get('nom') || '');
+    searchParams.append('prenom', data.get('prenom') || '');
+    searchParams.append('specialite', data.get('specialite') || '');
+    searchParams.append('ville', data.get('ville') || '');
+    searchParams.append('hebergement', data.get('hebergement') || '');
 
     fetch(SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors', // Apps Script web apps require no-cors from client-side fetch
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: searchParams.toString()
     })
     .then(() => {
       form.style.display = 'none';
