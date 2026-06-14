@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vis d'Ancrage — Conférence avec Dr Ernault</title>
+<style>
+  :root{
+    --ink:#1D1D1F;
+    --gray:#6E6E73;
+    --light-gray:#86868B;
+    --paper:#FFFFFF;
+    --surface:#F5F5F7;
+    --blue:#0071E3;
+    --blue-light:#E8F1FD;
+    --line:#D2D2D7;
+    --radius:18px;
+    --sans:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  body{
+    background:var(--surface);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.47;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:680px;
+    margin:0 auto;
+    padding:64px 24px 100px;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    text-align:center;
+    padding:0 12px 48px;
+  }
+
+  .eyebrow{
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin-bottom:16px;
+  }
+
+  h1{
+    font-weight:600;
+    font-size:clamp(36px, 7vw, 56px);
+    line-height:1.07;
+    letter-spacing:-0.015em;
+    color:var(--ink);
+  }
+
+  h1 .accent{
+    color:var(--blue);
+  }
+
+  .subtitle{
+    margin:18px auto 0;
+    font-size:19px;
+    font-weight:400;
+    color:var(--gray);
+    max-width:38ch;
+    letter-spacing:0;
+  }
+
+  /* ===== SIGNATURE ELEMENT: anchorage icon ===== */
+  .anchor-diagram{
+    width:56px;
+    height:56px;
+    margin:0 auto 28px;
+    display:block;
+  }
+
+  /* ===== META PILLS ===== */
+  .meta-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:32px;
+    flex-wrap:wrap;
+  }
+
+  .meta-pill{
+    background:var(--paper);
+    border-radius:980px;
+    padding:10px 20px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink);
+    box-shadow:0 1px 2px rgba(0,0,0,0.04);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .meta-pill .meta-label{
+    color:var(--light-gray);
+    font-weight:400;
+  }
+
+  /* ===== HOST STRIP ===== */
+  .hosts{
+    display:flex;
+    gap:12px;
+    margin-bottom:20px;
+  }
+
+  .host{
+    flex:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .host .label{
+    font-size:12px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--light-gray);
+    margin-bottom:6px;
+  }
+
+  .host .name{
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+
+  @media (max-width:520px){
+    .hosts{ flex-direction:column; }
+  }
+
+  /* ===== FORM CARD ===== */
+  .form-card{
+    background:var(--paper);
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.04), 0 8px 30px rgba(0,0,0,0.03);
+  }
+
+  @media (max-width:560px){
+    .form-card{ padding:28px 22px; }
+  }
+
+  .form-card h2{
+    font-size:28px;
+    font-weight:600;
+    letter-spacing:-0.015em;
+    margin-bottom:8px;
+  }
+
+  .form-card .form-sub{
+    font-size:15px;
+    color:var(--gray);
+    margin-bottom:36px;
+  }
+
+  .field{
+    margin-bottom:24px;
+  }
+
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+
+  @media (max-width:520px){
+    .field-row{ grid-template-columns:1fr; }
+  }
+
+  label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:8px;
+    letter-spacing:0;
+  }
+
+  label .req{
+    color:var(--blue);
+    font-weight:400;
+  }
+
+  input, select{
+    width:100%;
+    padding:14px 16px;
+    font-family:var(--sans);
+    font-size:16px;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid transparent;
+    border-radius:12px;
+    appearance:none;
+    -webkit-appearance:none;
+    transition:border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+
+  select{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%236E6E73' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 16px center;
+    padding-right:40px;
+    cursor:pointer;
+  }
+
+  input:focus, select:focus{
+    outline:none;
+    background:var(--paper);
+    border-color:var(--blue);
+    box-shadow:0 0 0 4px var(--blue-light);
+  }
+
+  input::placeholder{ color:var(--light-gray); }
+
+  fieldset{
+    border:none;
+    padding:0;
+    margin-bottom:24px;
+  }
+
+  fieldset legend{
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:10px;
+    padding:0;
+  }
+
+  /* Segmented control style for specialty */
+  .radio-group{
+    display:flex;
+    gap:6px;
+    background:var(--surface);
+    border-radius:12px;
+    padding:4px;
+  }
+
+  .radio-pill{
+    position:relative;
+    flex:1;
+  }
+
+  .radio-pill input[type="radio"]{
+    position:absolute;
+    opacity:0;
+    width:100%;
+    height:100%;
+    cursor:pointer;
+    margin:0;
+  }
+
+  .radio-pill label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--gray);
+    background:transparent;
+    cursor:pointer;
+    transition:all .15s ease;
+    margin-bottom:0;
+    white-space:nowrap;
+  }
+
+  .radio-pill input[type="radio"]:checked + label{
+    background:var(--paper);
+    color:var(--ink);
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .radio-pill input[type="radio"]:focus-visible + label{
+    box-shadow:0 0 0 3px var(--blue-light);
+  }
+
+  @media (max-width:480px){
+    .radio-group{ flex-direction:column; }
+    .radio-pill label{ padding:12px; }
+  }
+
+  /* Conditional room block */
+  .room-block{
+    border-radius:16px;
+    background:var(--blue-light);
+    padding:20px 22px;
+    margin-top:-4px;
+    margin-bottom:24px;
+    display:none;
+  }
+
+  .room-block.visible{
+    display:block;
+    animation:reveal .25s ease;
+  }
+
+  @keyframes reveal{
+    from{ opacity:0; transform:translateY(-6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .room-block .room-title{
+    font-size:14px;
+    font-weight:600;
+    color:var(--blue);
+    margin-bottom:6px;
+  }
+
+  .room-block p{
+    font-size:14px;
+    color:var(--ink);
+    margin-bottom:14px;
+    opacity:.85;
+  }
+
+  .room-block .radio-group{
+    background:rgba(255,255,255,0.6);
+  }
+
+  /* Submit */
+  .submit-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+
+  button[type="submit"]{
+    font-family:var(--sans);
+    font-size:17px;
+    font-weight:500;
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    border-radius:980px;
+    padding:14px 32px;
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+
+  button[type="submit"]:hover{
+    background:#0077ED;
+  }
+
+  button[type="submit"]:active{
+    transform:scale(0.98);
+  }
+
+  button[type="submit"]:disabled{
+    opacity:.5;
+    cursor:wait;
+  }
+
+  .status{
+    font-size:13px;
+    color:var(--gray);
+  }
+
+  .status.err{ color:#D70015; }
+
+  /* Confirmation */
+  .confirm{
+    display:none;
+    border-radius:24px;
+    background:var(--blue-light);
+    padding:40px 32px;
+    margin-top:24px;
+    text-align:center;
+  }
+
+  .confirm.visible{ display:block; animation:reveal .3s ease; }
+
+  .confirm .check{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    margin:0 auto 16px;
+  }
+
+  .confirm h3{
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin-bottom:8px;
+  }
+
+  .confirm p{
+    font-size:15px;
+    color:var(--gray);
+    max-width:38ch;
+    margin:0 auto;
+  }
+
+  footer{
+    margin-top:40px;
+    text-align:center;
+    font-size:12px;
+    color:var(--light-gray);
+    letter-spacing:.02em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <svg class="anchor-diagram" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <line x1="32" y1="6" x2="32" y2="42" stroke="#0071E3" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M27 11 L37 11 M27 17 L37 17 M27 23 L37 23 M27 29 L37 29 M27 35 L37 35" stroke="#0071E3" stroke-width="2.5" stroke-linecap="round" opacity="0.45"/>
+      <path d="M22 42 L42 42 L32 58 Z" stroke="#1D1D1F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+      <circle cx="32" cy="6" r="3" fill="#0071E3"/>
+    </svg>
+
+    <div class="eyebrow">Formation continue · Orthodontie</div>
+
+    <h1>Vis d'Ancrage<br><span class="accent">Techniques cliniques</span></h1>
+    <p class="subtitle">Une session pratique animée par le Dr Ernault, dédiée aux protocoles d'ancrage osseux en orthodontie moderne.</p>
+
+    <div class="meta-row">
+      <div class="meta-pill"><span class="meta-label">Intervenant</span> Dr Ernault</div>
+      <div class="meta-pill"><span class="meta-label">Lieu</span> Sousse, Tunisie</div>
+      <div class="meta-pill"><span class="meta-label">Public</span> Dentistes & Orthodontistes</div>
+    </div>
+  </div>
+
+  <!-- HOSTS -->
+  <div class="hosts">
+    <div class="host">
+      <div class="label">Organisé par</div>
+      <div class="name">Medical Advanced Technology</div>
+    </div>
+    <div class="host">
+      <div class="label">Co-organisé par</div>
+      <div class="name">Bloom Aligner</div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <h2>Formulaire d'inscription</h2>
+    <p class="form-sub">Merci de remplir vos informations ci-dessous. Les places sont limitées.</p>
+
+    <form id="signupForm">
+
+      <div class="field-row">
+        <div class="field">
+          <label for="nom">Nom <span class="req">*</span></label>
+          <input type="text" id="nom" name="nom" placeholder="Ben Ali" required>
+        </div>
+        <div class="field">
+          <label for="prenom">Prénom <span class="req">*</span></label>
+          <input type="text" id="prenom" name="prenom" placeholder="Sami" required>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Spécialité <span class="req">*</span></legend>
+        <div class="radio-group">
+          <div class="radio-pill">
+            <input type="radio" id="spec-ortho" name="specialite" value="Orthodontiste" required>
+            <label for="spec-ortho">Orthodontiste</label>
+          </div>
+          <div class="radio-pill">
+            <input type="radio" id="spec-dentiste" name="specialite" value="Dentiste">
+            <label for="spec-dentiste">Dentiste</label>
+          </div>
+          <div class="radio-pill">
+            <input type="radio" id="spec-omni" name="specialite" value="Omnipraticien">
+            <label for="spec-omni">Omnipraticien</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="ville">Ville <span class="req">*</span></label>
+        <select id="ville" name="ville" required>
+          <option value="" disabled selected>Sélectionnez votre ville</option>
+          <optgroup label="Région de Sousse">
+            <option value="Sousse">Sousse</option>
+            <option value="Hammam Sousse">Hammam Sousse</option>
+            <option value="Akouda">Akouda</option>
+            <option value="Kalaa Kebira">Kalâa Kebira</option>
+            <option value="Kalaa Sghira">Kalâa Sghira</option>
+            <option value="Msaken">Msaken</option>
+            <option value="Hergla">Hergla</option>
+            <option value="Sidi Bou Ali">Sidi Bou Ali</option>
+            <option value="Enfidha">Enfidha</option>
+          </optgroup>
+          <optgroup label="Régions voisines">
+            <option value="Monastir">Monastir</option>
+            <option value="Mahdia">Mahdia</option>
+            <option value="Kairouan">Kairouan</option>
+          </optgroup>
+          <optgroup label="Autres villes de Tunisie">
+            <option value="Tunis">Tunis</option>
+            <option value="Ariana">Ariana</option>
+            <option value="Ben Arous">Ben Arous</option>
+            <option value="Manouba">Manouba</option>
+            <option value="Nabeul">Nabeul</option>
+            <option value="Hammamet">Hammamet</option>
+            <option value="Bizerte">Bizerte</option>
+            <option value="Beja">Béja</option>
+            <option value="Jendouba">Jendouba</option>
+            <option value="Le Kef">Le Kef</option>
+            <option value="Siliana">Siliana</option>
+            <option value="Zaghouan">Zaghouan</option>
+            <option value="Sfax">Sfax</option>
+            <option value="Gafsa">Gafsa</option>
+            <option value="Sidi Bouzid">Sidi Bouzid</option>
+            <option value="Kasserine">Kasserine</option>
+            <option value="Gabes">Gabès</option>
+            <option value="Medenine">Médenine</option>
+            <option value="Tataouine">Tataouine</option>
+            <option value="Tozeur">Tozeur</option>
+            <option value="Kebili">Kébili</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="room-block" id="roomBlock">
+        <div class="room-title">Hébergement</div>
+        <p>Vous venez d'une ville éloignée de Sousse — souhaitez-vous que nous vous réservions une chambre pour la nuit de la conférence ?</p>
+        <div class="radio-group">
+          <div class="radio-pill">
+            <input type="radio" id="room-yes" name="hebergement" value="Oui">
+            <label for="room-yes">Oui, merci</label>
+          </div>
+          <div class="radio-pill">
+            <input type="radio" id="room-no" name="hebergement" value="Non">
+            <label for="room-no">Non merci</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" id="submitBtn">Envoyer mon inscription</button>
+        <span class="status" id="statusMsg"></span>
+      </div>
+    </form>
+
+    <div class="confirm" id="confirmBox">
+      <div class="check">✓</div>
+      <h3>Inscription enregistrée</h3>
+      <p>Merci ! Votre place pour la session "Vis d'Ancrage" avec le Dr Ernault est confirmée. Vous recevrez les détails pratiques par e-mail.</p>
+    </div>
+  </div>
+
+  <footer>Medical Advanced Technology × Bloom Aligner — Sousse, Tunisie</footer>
+</div>
+
+<script>
+  // ===== CONFIGURATION =====
+  // Replace this with your deployed Google Apps Script Web App URL
+  const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+  // Cities considered "Sousse or close area" — no room offer needed for these
+  const NEARBY_CITIES = [
+    "Sousse", "Hammam Sousse", "Akouda", "Kalaa Kebira",
+    "Kalaa Sghira", "Msaken", "Hergla", "Sidi Bou Ali", "Enfidha"
+  ];
+
+  const villeSelect = document.getElementById('ville');
+  const roomBlock = document.getElementById('roomBlock');
+  const roomInputs = roomBlock.querySelectorAll('input[name="hebergement"]');
+
+  villeSelect.addEventListener('change', () => {
+    const isNearby = NEARBY_CITIES.includes(villeSelect.value);
+    if (villeSelect.value && !isNearby) {
+      roomBlock.classList.add('visible');
+    } else {
+      roomBlock.classList.remove('visible');
+      roomInputs.forEach(r => r.checked = false);
+    }
+  });
+
+  const form = document.getElementById('signupForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const confirmBox = document.getElementById('confirmBox');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    if (SCRIPT_URL.includes("PASTE_YOUR_APPS_SCRIPT")) {
+      statusMsg.textContent = "Configuration requise : ajoutez l'URL du Apps Script dans index.html";
+      statusMsg.className = "status err";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    statusMsg.textContent = "Envoi en cours…";
+    statusMsg.className = "status";
+
+    const data = new FormData(form);
+    const payload = {
+      nom: data.get('nom') || '',
+      prenom: data.get('prenom') || '',
+      specialite: data.get('specialite') || '',
+      ville: data.get('ville') || '',
+      hebergement: data.get('hebergement') || ''
+    };
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Apps Script web apps require no-cors from client-side fetch
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      form.style.display = 'none';
+      confirmBox.classList.add('visible');
+      statusMsg.textContent = '';
+    })
+    .catch((err) => {
+      statusMsg.textContent = "Erreur d'envoi. Veuillez réessayer.";
+      statusMsg.className = "status err";
+      submitBtn.disabled = false;
+    });
+  });
+</script>
+</body>
+</html>
